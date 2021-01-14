@@ -1,0 +1,150 @@
+{% extends 'bootstrap/base.html' %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{# 定制标题 #}
+{% block title %}默认标题{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style type="text/css">
+    #sub_menu_1{
+      display: none;
+        background-color: white;
+        list-style-type: none;
+    }
+    ul li:hover{
+      cursor: pointer;
+    }
+  </style>
+{% endblock %}
+
+{# 定制导航条 #}
+{% block navbar %}
+    <nav class="navbar navbar-inverse" style="border-radius: 0px;">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">首页</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('user.mine') }}">我发表的</a></li>
+                    <li><a href="{{ url_for('user.favorite') }}">我收藏的</a></li>
+                    <li onclick = "f('sub_menu_1')"><a>功能列表（点击出现下拉菜单）</a>
+                        <ul id="sub_menu_1">
+                            <li>功能都做了</li>
+                            <li>测试用户名：dandan</li>
+                            <li>测试密码：123456</li>
+                            <li>用户管理
+                                <ul>
+                                    <li>注册</li>
+                                    <li>邮件激活</li>
+                                    <li>登陆（记住我）</li>
+                                    <li>退出</li>
+                                    <li>个人信息展示</li>
+                                    <li>修改密码</li>
+                                    <li>修改邮箱（需要在邮件中确认）</li>
+                                    <li>头像上传</li>
+                                </ul>
+                            </li>
+                            <li>列表展示
+                                <ul>
+                                    <li>首页</li>
+                                    <li>我发表的</li>
+                                    <li>我的收藏</li>
+                                    <li>功能列表</li>
+                                </ul>
+                            </li>
+                            <li>详情页面
+                                <ul>
+                                    <li>点击跳转详情页</li>
+                                    <li>详情内容</li>
+                                    <li>评论展示</li>
+                                    <li>分页展示评论</li>
+                                    <li>发表评论</li>
+                                </ul>
+                            </li>
+                            <li>发表段子
+                                <ul>
+                                    <li>发表</li>
+                                    <li>继续发表</li>
+                                    <li>返回首页</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('posts.pub') }}">发表</a></li>
+                {% if current_user.is_authenticated %}
+
+                    <li><a href="{{ url_for('user.logout') }}">退出</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ current_user.username }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('user.profile') }}">个人信息</a></li>
+                            <li><a href="{{ url_for('user.change_pwd') }}">修改密码</a></li>
+                            <li><a href="{{ url_for('user.change_email') }}">修改邮箱</a></li>
+                            <li><a href="{{ url_for('user.change_icon') }}">头像上传</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('user.register') }}">注册</a></li>
+                    <li><a href="{{ url_for('user.login') }}">登录</a></li>
+                {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav>
+{% endblock %}
+
+{# 定制内容 #}
+{% block content %}
+    <div class="container">
+        {# flash消息 #}
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                {{message}}
+            </div>
+        {% endfor %}
+
+        {# 页面内容 #}
+        {% block page_content %}默认内容{% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.locale('zh-CN') }}
+
+    <script type="text/javascript">
+    function f(str){
+        var sub_menu = document.getElementById(str);
+        var dis_v = sub_menu.style.display;
+
+        if(dis_v == "none")
+          sub_menu.style.display = "block";
+        else
+          sub_menu.style.display = "none";
+
+
+      }
+
+  </script>
+
+{% endblock %}

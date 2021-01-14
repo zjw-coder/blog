@@ -1,0 +1,28 @@
+{% extends 'common/base.html' %}
+{% from 'common/macro.html' import pagination_show %}
+{% block title %}
+    我的
+{% endblock %}
+
+{% block page_content %}
+    {{ wtf.quick_form(form) }}
+
+    {% for post in mine_posts %}
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <img class="media-object" src="{{ url_for('static', filename='upload/' + post.user.icon) }}" alt="头像" style="width: 64px; height: 64px">
+            </a>
+          </div>
+          <div class="media-body">
+              <div style="float:right;">
+                  {{ moment(post.timestamp).fromNow() }}
+              </div>
+            <h4 class="media-heading">{{ post.user.username }}</h4>
+            <a href="{{ url_for('main.post_detail', id=post.id) }}">{{ post.content }}</a>
+          </div>
+        </div>
+    {% endfor %}
+
+    {{ pagination_show(pagination, 'user.mine') }}
+{% endblock %}

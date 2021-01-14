@@ -1,0 +1,9 @@
+{% extends 'common/base.html' %}
+{% from 'common/macro.html' import pagination_show %}
+{% block title %}
+    首页
+{% endblock %}
+
+{% block page_content %}
+    {{ wtf.quick_form(form) }}
+{% endblock %}

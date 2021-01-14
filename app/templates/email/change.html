@@ -1,0 +1,2 @@
+<h1>Hello {{ username }}</h1>
+<p>确认修改邮箱请点击右边链接<a href="{{ url_for('user.confirm_email', token=token,_external=True) }}">确认</a></p>

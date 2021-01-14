@@ -1,0 +1,48 @@
+{% extends 'common/base.html' %}
+{% from 'common/macro.html' import pagination_show %}
+
+
+{% block title %}
+    博客详情
+{% endblock %}
+
+{% block page_content %}
+
+    <ul class="media-list">
+      <li class="media">
+        <div class="media-left">
+          <a href="#">
+            <img class="media-object" src="{{ url_for('static', filename='upload/' + post.user.icon) }}" alt="头像" style="width: 64px; height: 64px">
+          </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{ post.content }}</h4>
+        </div>
+      </li>
+    </ul>
+
+    {{ wtf.quick_form(form) }}
+
+    <br>
+
+    {% for comment in comments %}
+        <ul class="media-list">
+          <li class="media">
+            <div class="media-left">
+              <a href="#">
+                <img class="media-object" src="{{ url_for('static', filename='upload/' + post.user.icon) }}" alt="头像" style="width: 64px; height: 64px">
+              </a>
+            </div>
+            <div class="media-body">
+                <div style="float:right;">
+                  {{ moment(comment.timestamp).fromNow() }}
+              </div>
+              <h4 class="media-heading">{{ comment.content }}</h4>
+            </div>
+          </li>
+        </ul>
+    {% endfor %}
+
+    {{ pagination_show(pagination, 'main.post_detail', id=id) }}
+
+{% endblock %}

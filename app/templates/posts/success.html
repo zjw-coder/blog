@@ -1,0 +1,9 @@
+{% extends 'common/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}发表成功{% endblock %}
+
+{% block page_content %}
+    <a href="{{ url_for('posts.pub') }}">继续发表</a>
+    <a href="{{ url_for('main.index') }}">返回首页</a>
+{% endblock %}
